@@ -59,8 +59,8 @@ deploy_prod() {
     check_docker
     check_docker_compose
 
-    docker-compose --profile production up --build -d
-    log_info "生产环境已启动，访问: http://localhost:$PROD_PORT"
+    docker-compose up --build -d
+    log_info "生产环境已启动，访问: http://localhost:$DEV_PORT"
 }
 
 # 停止服务
@@ -68,7 +68,6 @@ stop_services() {
     log_info "停止所有服务..."
     check_docker_compose
 
-    docker-compose --profile production down 2>/dev/null || true
     docker-compose down 2>/dev/null || true
     log_info "服务已停止"
 }
@@ -89,7 +88,6 @@ clean_resources() {
         log_info "清理资源..."
         check_docker_compose
 
-        docker-compose --profile production down -v --rmi all 2>/dev/null || true
         docker-compose down -v --rmi all 2>/dev/null || true
 
         # 清理悬空的镜像和卷

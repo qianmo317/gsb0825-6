@@ -45,7 +45,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 import { ElMessage } from "element-plus";
 import { useUserStore } from "../stores";
-import { userApi } from "../api";
+import type { User } from "../types/user";
 
 const router = useRouter();
 const userStore = useUserStore();
@@ -88,7 +88,7 @@ const handleLogin = async () => {
           };
 
           // 保存用户信息
-          userStore.setUser(user);
+          userStore.setUser(user as User);
           userStore.setToken(`demo-token-${Date.now()}`);
 
           ElMessage.success("登录成功");

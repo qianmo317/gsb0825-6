@@ -1,5 +1,5 @@
 # 使用Node.js官方镜像作为基础镜像
-FROM node:18-alpine AS builder
+FROM node:22-alpine AS builder
 
 # 设置工作目录
 WORKDIR /app
@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 安装所有依赖（包括devDependencies，用于构建）
-RUN npm ci
+RUN npm install
 
 # 复制源代码
 COPY . .

@@ -160,7 +160,7 @@ const fetchTeachers = async () => {
 // 监听分页和搜索变化
 const filteredTeachers = computed(() => {
   const filtered = dataStore.teachers.filter(
-    (teacher) =>
+    (teacher: any) =>
       teacher.username.toLowerCase().includes(searchText.value.toLowerCase()) ||
       teacher.email.toLowerCase().includes(searchText.value.toLowerCase()),
   );

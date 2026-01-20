@@ -173,11 +173,8 @@ pnpm build
 使用提供的部署脚本可以一键完成部署：
 
 ```bash
-# 开发环境部署
+# 启动应用
 ./deploy.sh dev
-
-# 生产环境部署
-./deploy.sh prod
 
 # 停止服务
 ./deploy.sh stop
@@ -189,22 +186,21 @@ pnpm build
 ./deploy.sh clean
 ```
 
-#### 使用 Docker Compose（推荐）
+#### 使用 Docker Compose
 
-1. **构建并启动服务**:
+**构建并启动服务**:
 
 ```bash
-# 开发环境（只运行Vue应用）
+# 构建并启动应用
 docker-compose up --build
 
-# 生产环境（包含Nginx反向代理）
-docker-compose --profile production up --build
+# 后台运行
+docker-compose up --build -d
 ```
 
-2. **访问应用**:
+**访问应用**:
 
-- 开发环境: http://localhost:8080
-- 生产环境: http://localhost
+- 应用地址: http://localhost:8080
 
 #### 仅使用 Dockerfile
 

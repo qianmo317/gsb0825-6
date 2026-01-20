@@ -196,7 +196,7 @@ export const useDataStore = defineStore("data", {
           ...this.teachers[index],
           ...teacher,
           updatedAt: new Date().toISOString(),
-        };
+        } as any;
       }
     },
 
@@ -225,7 +225,7 @@ export const useDataStore = defineStore("data", {
           ...this.students[index],
           ...student,
           updatedAt: new Date().toISOString(),
-        };
+        } as Student;
       }
     },
 
@@ -254,7 +254,7 @@ export const useDataStore = defineStore("data", {
           ...this.courses[index],
           ...course,
           updatedAt: new Date().toISOString(),
-        };
+        } as any;
       }
     },
 
