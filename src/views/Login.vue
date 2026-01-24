@@ -50,7 +50,7 @@ import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus'
 import { useUserStore } from '../stores'
 import type { User } from '../types/user'
-import { User as UserIcon, Lock, Monitor } from '@element-plus/icons-vue'
+import { Monitor } from '@element-plus/icons-vue'
 
 const router = useRouter()
 const userStore = useUserStore()
