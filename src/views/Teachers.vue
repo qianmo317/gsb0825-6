@@ -1,73 +1,49 @@
 <template>
-  <div class="teachers">
+  <div class="teachers page-container">
     <div class="page-header">
-      <h1>教师管理</h1>
-      <el-button type="primary" @click="showAddDialog">
-        <el-icon><Plus /></el-icon>
+      <h1 class="page-title">教师管理</h1>
+      <el-button type="primary" size="large" @click="showAddDialog">
+        <el-icon style="margin-right: 8px"><Plus /></el-icon>
         添加教师
       </el-button>
     </div>
 
-    <el-card>
-      <template #header>
-        <div class="table-header">
-          <el-input
-            v-model="searchText"
-            placeholder="搜索教师姓名或邮箱"
-            style="width: 300px"
-            clearable
-          />
-        </div>
-      </template>
+    <el-card shadow="never">
+      <div class="table-toolbar">
+        <el-input
+          v-model="searchText"
+          placeholder="搜索教师姓名或邮箱"
+          style="width: 320px"
+          clearable
+          prefix-icon="Search"
+        />
+      </div>
 
-      <el-table
-        :data="filteredTeachers"
-        style="width: 100%"
-        :stripe="true"
-        :border="false"
-        v-loading="loading"
-      >
-        <el-table-column prop="id" label="ID" width="80" align="center" />
-        <el-table-column prop="username" label="用户名" min-width="120" />
-        <el-table-column prop="email" label="邮箱" min-width="200" />
-        <el-table-column prop="role" label="角色" width="100" align="center">
+      <el-table :data="filteredTeachers" v-loading="loading" hover>
+        <el-table-column prop="id" label="ID" width="100" />
+        <el-table-column prop="username" label="用户名" min-width="150" />
+        <el-table-column prop="email" label="邮箱" min-width="220" />
+        <el-table-column prop="role" label="角色" width="120">
           <template #default="scope">
-            <el-tag :type="scope.row.role === 'admin' ? 'danger' : 'primary'">
-              {{ scope.row.role === "admin" ? "管理员" : "教师" }}
+            <el-tag :type="scope.row.role === 'admin' ? 'danger' : 'success'" effect="light" round>
+              {{ scope.row.role === 'admin' ? '管理员' : '教师' }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="createdAt"
-          label="创建时间"
-          min-width="160"
-          align="center"
-        >
+        <el-table-column prop="createdAt" label="创建时间" min-width="180">
           <template #default="scope">
             {{ formatDate(scope.row.createdAt) }}
           </template>
         </el-table-column>
-        <el-table-column label="操作" width="160" align="center" fixed="right">
+        <el-table-column label="操作" width="180" fixed="right">
           <template #default="scope">
-            <el-button
-              size="small"
-              type="primary"
-              @click="editTeacher(scope.row)"
-            >
-              编辑
-            </el-button>
-            <el-button
-              size="small"
-              type="danger"
-              @click="deleteTeacher(scope.row)"
-            >
-              删除
-            </el-button>
+            <el-button size="small" type="primary" @click="editTeacher(scope.row)">编辑</el-button>
+            <el-button link type="danger" @click="deleteTeacher(scope.row)">删除</el-button>
           </template>
         </el-table-column>
       </el-table>
 
-      <div class="pagination">
+      <div class="pagination-container">
         <el-pagination
           v-model:current-page="currentPage"
           v-model:page-size="pageSize"
@@ -84,244 +60,162 @@
     <el-dialog
       v-model="dialogVisible"
       :title="isEditing ? '编辑教师' : '添加教师'"
-      width="500px"
+      width="480px"
+      append-to-body
+      destroy-on-close
+      class="custom-dialog"
     >
-      <el-form
-        :model="teacherForm"
-        :rules="formRules"
-        ref="formRef"
-        label-width="100px"
-      >
+      <el-form :model="teacherForm" :rules="formRules" ref="formRef" label-position="top">
         <el-form-item label="用户名" prop="username">
-          <el-input v-model="teacherForm.username" />
+          <el-input v-model="teacherForm.username" placeholder="请输入用户名" />
         </el-form-item>
         <el-form-item label="邮箱" prop="email">
-          <el-input v-model="teacherForm.email" />
+          <el-input v-model="teacherForm.email" placeholder="请输入邮箱" />
         </el-form-item>
         <el-form-item label="角色" prop="role">
-          <el-select v-model="teacherForm.role">
+          <el-select v-model="teacherForm.role" style="width: 100%">
             <el-option label="教师" value="teacher" />
             <el-option label="管理员" value="admin" />
           </el-select>
         </el-form-item>
       </el-form>
       <template #footer>
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="submitForm">确定</el-button>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="submitForm">确定保存</el-button>
+        </div>
       </template>
     </el-dialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import { Plus } from "@element-plus/icons-vue";
-import { ElMessage, ElMessageBox } from "element-plus";
-import type { User } from "../types/user";
-import { useDataStore } from "../stores";
+import { ref, computed, onMounted } from 'vue'
+import { Plus, Search } from '@element-plus/icons-vue'
+import { ElMessage, ElMessageBox } from 'element-plus'
+import type { User } from '../types/user'
+import { useDataStore } from '../stores'
 
-const dataStore = useDataStore();
+const dataStore = useDataStore()
 
-const searchText = ref("");
-const formRef = ref();
-const currentPage = ref(1);
-const pageSize = ref(10);
-const dialogVisible = ref(false);
-const isEditing = ref(false);
+const searchText = ref('')
+const formRef = ref()
+const currentPage = ref(1)
+const pageSize = ref(10)
+const dialogVisible = ref(false)
+const isEditing = ref(false)
 const teacherForm = ref<User>({
   id: 0,
-  username: "",
-  email: "",
-  role: "teacher",
-  createdAt: "",
-  updatedAt: "",
-});
+  username: '',
+  email: '',
+  role: 'teacher',
+  createdAt: '',
+  updatedAt: ''
+})
 
 const formRules = {
-  username: [{ required: true, message: "请输入用户名", trigger: "blur" }],
+  username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
   email: [
-    { required: true, message: "请输入邮箱", trigger: "blur" },
-    { type: "email", message: "请输入正确的邮箱格式", trigger: "blur" },
-  ],
-};
+    { required: true, message: '请输入邮箱', trigger: 'blur' },
+    { type: 'email', message: '请输入正确的邮箱格式', trigger: 'blur' }
+  ]
+}
 
-const loading = ref(false);
+const loading = ref(false)
 
-// 获取教师列表
 const fetchTeachers = async () => {
-  loading.value = true;
-  // 模拟API调用延迟
-  await new Promise((resolve) => setTimeout(resolve, 500));
-  // 初始化数据（如果还没有初始化）
-  dataStore.initializeData();
-  loading.value = false;
-};
+  loading.value = true
+  await new Promise((resolve) => setTimeout(resolve, 500))
+  dataStore.initializeData()
+  loading.value = false
+}
 
-// 监听分页和搜索变化
 const filteredTeachers = computed(() => {
   const filtered = dataStore.teachers.filter(
     (teacher: any) =>
       teacher.username.toLowerCase().includes(searchText.value.toLowerCase()) ||
-      teacher.email.toLowerCase().includes(searchText.value.toLowerCase()),
-  );
+      teacher.email.toLowerCase().includes(searchText.value.toLowerCase())
+  )
   return filtered.slice(
     (currentPage.value - 1) * pageSize.value,
-    currentPage.value * pageSize.value,
-  );
-});
+    currentPage.value * pageSize.value
+  )
+})
 
-const totalTeachers = computed(() => dataStore.teachers.length);
+const totalTeachers = computed(() => dataStore.teachers.length)
 
-// 组件挂载时获取数据
 onMounted(() => {
-  fetchTeachers();
-});
+  fetchTeachers()
+})
 
 const showAddDialog = () => {
-  isEditing.value = false;
+  isEditing.value = false
   teacherForm.value = {
     id: 0,
-    username: "",
-    email: "",
-    role: "teacher",
-    createdAt: "",
-    updatedAt: "",
-  };
-  dialogVisible.value = true;
-};
+    username: '',
+    email: '',
+    role: 'teacher',
+    createdAt: '',
+    updatedAt: ''
+  }
+  dialogVisible.value = true
+}
 
 const editTeacher = (teacher: User) => {
-  isEditing.value = true;
-  teacherForm.value = { ...teacher };
-  dialogVisible.value = true;
-};
+  isEditing.value = true
+  teacherForm.value = { ...teacher }
+  dialogVisible.value = true
+}
 
 const deleteTeacher = async (teacher: User) => {
   try {
-    await ElMessageBox.confirm(
-      `确定要删除教师 ${teacher.username} 吗？`,
-      "提示",
-      {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning",
-      },
-    );
-
-    // 使用dataStore删除教师
-    dataStore.deleteTeacher(teacher.id);
-    ElMessage.success("删除成功");
+    await ElMessageBox.confirm(`确定要删除教师 ${teacher.username} 吗？`, '提示', {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning'
+    })
+    dataStore.deleteTeacher(teacher.id)
+    ElMessage.success('删除成功')
   } catch (error) {
-    if (error !== "cancel") {
-      console.error("删除教师失败:", error);
-    }
+    // 忽略取消
   }
-};
+}
 
 const submitForm = async () => {
-  if (!formRef.value) return;
-
+  if (!formRef.value) return
   await formRef.value.validate((valid: boolean) => {
     if (valid) {
       if (isEditing.value) {
-        // 使用dataStore更新教师
-        dataStore.updateTeacher(teacherForm.value.id, teacherForm.value);
-        ElMessage.success("更新成功");
+        dataStore.updateTeacher(teacherForm.value.id, teacherForm.value)
+        ElMessage.success('更新成功')
       } else {
-        // 使用dataStore添加教师
-        dataStore.addTeacher(teacherForm.value);
-        ElMessage.success("添加成功");
+        dataStore.addTeacher(teacherForm.value)
+        ElMessage.success('添加成功')
       }
-      dialogVisible.value = false;
+      dialogVisible.value = false
     }
-  });
-};
+  })
+}
 
 const handleSizeChange = (val: number) => {
-  pageSize.value = val;
-  currentPage.value = 1;
-};
+  pageSize.value = val
+  currentPage.value = 1
+}
 
 const handleCurrentChange = (val: number) => {
-  currentPage.value = val;
-};
+  currentPage.value = val
+}
 
 const formatDate = (dateStr: string) => {
-  return new Date(dateStr).toLocaleDateString("zh-CN");
-};
+  if (!dateStr) return '-'
+  return new Date(dateStr).toLocaleDateString('zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  })
+}
 </script>
 
 <style scoped>
-.teachers {
-  padding: 20px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-}
-
-:deep(.el-table) {
-  width: 100%;
-  margin-bottom: 20px;
-}
-
-:deep(.el-table__header th) {
-  background-color: #f5f7fa;
-  color: #606266;
-  font-weight: 600;
-}
-
-:deep(.el-table__row) {
-  transition: background-color 0.2s ease;
-}
-
-:deep(.el-table__row:hover) {
-  background-color: #f5f7fa;
-}
-
-.pagination {
-  margin-top: 20px;
-  text-align: right;
-}
-
-/* 响应式设计 */
-@media (max-width: 768px) {
-  .teachers {
-    padding: 10px;
-  }
-
-  .page-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .table-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-  }
-
-  :deep(.el-table) {
-    font-size: 12px;
-  }
-
-  :deep(.el-button) {
-    padding: 8px 16px;
-    font-size: 12px;
-  }
-}
+/* 样式已通过全局和基础组件优化 */
 </style>
