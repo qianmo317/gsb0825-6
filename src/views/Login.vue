@@ -144,13 +144,24 @@ const handleLogin = async () => {
 
 .login-card {
   width: 420px;
-  padding: 48px;
+  max-width: 90%;
+  padding: 48px 32px;
   background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(20px);
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 24px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.08);
   z-index: 1;
+}
+
+@media (max-width: 480px) {
+  .login-card {
+    padding: 32px 24px;
+  }
+
+  .login-header h2 {
+    font-size: 20px;
+  }
 }
 
 .login-header {

@@ -308,6 +308,7 @@ onUnmounted(() => {
   left: -250px;
   height: 100vh;
   z-index: 2000;
+  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 .sidebar-overlay {
@@ -317,8 +318,9 @@ onUnmounted(() => {
   width: 100%;
   height: 100%;
   background-color: rgba(15, 23, 42, 0.3);
-  backdrop-filter: blur(2px);
+  backdrop-filter: blur(4px);
   z-index: 1999;
+  transition: opacity 0.3s ease;
 }
 
 /* 响应式设计 */

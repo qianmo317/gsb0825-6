@@ -61,9 +61,9 @@
       v-model="dialogVisible"
       :title="isEditing ? '编辑教师' : '添加教师'"
       width="480px"
+      class="responsive-dialog"
       append-to-body
       destroy-on-close
-      class="custom-dialog"
     >
       <el-form :model="teacherForm" :rules="formRules" ref="formRef" label-position="top">
         <el-form-item label="用户名" prop="username">

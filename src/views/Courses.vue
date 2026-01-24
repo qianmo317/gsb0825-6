@@ -67,6 +67,7 @@
       v-model="dialogVisible"
       :title="isEditing ? '编辑课程' : '添加课程'"
       width="520px"
+      class="responsive-dialog"
       append-to-body
       destroy-on-close
     >

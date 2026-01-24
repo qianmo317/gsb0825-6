@@ -29,7 +29,7 @@
               <span>用户角色分布</span>
             </div>
           </template>
-          <v-chart class="chart" :option="userRoleChartOption" />
+          <v-chart class="chart" :option="userRoleChartOption" autoresize />
         </el-card>
 
         <!-- 月活跃用户趋势图 -->
@@ -40,7 +40,7 @@
               <span>月活跃用户趋势</span>
             </div>
           </template>
-          <v-chart class="chart" :option="activeUserTrendChartOption" />
+          <v-chart class="chart" :option="activeUserTrendChartOption" autoresize />
         </el-card>
 
         <!-- 学生年级分布柱状图 -->
@@ -51,7 +51,7 @@
               <span>学生年级分布</span>
             </div>
           </template>
-          <v-chart class="chart" :option="gradeDistributionChartOption" />
+          <v-chart class="chart" :option="gradeDistributionChartOption" autoresize />
         </el-card>
 
         <!-- 课程统计柱状图 -->
@@ -62,7 +62,7 @@
               <span>课程统计</span>
             </div>
           </template>
-          <v-chart class="chart" :option="courseStatsChartOption" />
+          <v-chart class="chart" :option="courseStatsChartOption" autoresize />
         </el-card>
       </div>
     </div>
