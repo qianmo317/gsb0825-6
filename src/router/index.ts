@@ -31,6 +31,12 @@ const routes: RouteRecordRaw[] = [
     meta: { title: "课程管理", layout: "AdminLayout" },
   },
   {
+    path: "/grades",
+    name: "Grades",
+    component: () => import("../views/Grades.vue"),
+    meta: { title: "成绩管理", layout: "AdminLayout" },
+  },
+  {
     path: "/login",
     name: "Login",
     component: () => import("../views/Login.vue"),
