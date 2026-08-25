@@ -48,6 +48,18 @@
               <span>课程管理</span>
             </template>
           </el-menu-item>
+          <el-menu-item index="/grades">
+            <el-icon><EditPen /></el-icon>
+            <template #title>
+              <span>成绩管理</span>
+            </template>
+          </el-menu-item>
+          <el-menu-item index="/grade-analysis">
+            <el-icon><TrendCharts /></el-icon>
+            <template #title>
+              <span>学情分析</span>
+            </template>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 
@@ -99,6 +111,8 @@ import {
   User,
   UserFilled,
   DocumentCopy,
+  EditPen,
+  TrendCharts,
   Fold,
   Expand,
   ArrowDown
