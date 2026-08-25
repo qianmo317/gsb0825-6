@@ -294,15 +294,15 @@ const activeUserTrendChartOption = computed(() => ({
 }
 
 .page-title {
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 24px;
+  font-weight: 600;
   color: var(--text-primary);
   margin: 0 0 8px 0;
 }
 
 .page-subtitle {
   color: var(--text-secondary);
-  font-size: 16px;
+  font-size: 14px;
   margin: 0;
 }
 
@@ -397,7 +397,7 @@ const activeUserTrendChartOption = computed(() => ({
   }
 
   .page-title {
-    font-size: 24px;
+    font-size: 20px;
   }
 }
 </style>

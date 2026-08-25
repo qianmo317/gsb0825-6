@@ -2,7 +2,7 @@
   <div class="students page-container">
     <div class="page-header">
       <h1 class="page-title">学生管理</h1>
-      <el-button type="primary" size="large" @click="showAddDialog">
+      <el-button type="primary" @click="showAddDialog">
         <el-icon style="margin-right: 8px"><Plus /></el-icon>
         添加学生
       </el-button>
@@ -132,14 +132,14 @@ const loading = ref(false)
 
 const fetchStudents = async () => {
   loading.value = true
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve: (value: unknown) => void) => setTimeout(resolve, 500))
   dataStore.initializeData()
   loading.value = false
 }
 
 const filteredStudents = computed(() => {
   const filtered = dataStore.students.filter(
-    (student) =>
+    (student: Student) =>
       student.username.toLowerCase().includes(searchText.value.toLowerCase()) ||
       student.email.toLowerCase().includes(searchText.value.toLowerCase())
   )

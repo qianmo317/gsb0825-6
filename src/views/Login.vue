@@ -183,7 +183,7 @@ const handleLogin = async () => {
 
 .login-header h2 {
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--text-primary);
   margin: 0;
   letter-spacing: -0.5px;
@@ -196,7 +196,7 @@ const handleLogin = async () => {
 }
 
 :deep(.el-input__wrapper) {
-  padding: 12px 16px;
+  padding: 10px 16px;
   background-color: #f8fafc !important;
   box-shadow: none !important;
   border: 1px solid #e2e8f0;
@@ -211,9 +211,9 @@ const handleLogin = async () => {
 }
 
 .login-button {
-  height: 50px;
+  height: 44px;
   font-size: 16px;
-  font-weight: 600;
+  font-weight: 500;
   border-radius: 12px !important;
   margin-top: 10px;
   box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.3);

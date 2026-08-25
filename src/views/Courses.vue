@@ -2,7 +2,7 @@
   <div class="courses page-container">
     <div class="page-header">
       <h1 class="page-title">课程管理</h1>
-      <el-button type="primary" size="large" @click="showAddDialog">
+      <el-button type="primary" @click="showAddDialog">
         <el-icon style="margin-right: 8px"><Plus /></el-icon>
         添加课程
       </el-button>
@@ -143,13 +143,13 @@ const loading = ref(false)
 
 const fetchCourses = async () => {
   loading.value = true
-  await new Promise((resolve) => setTimeout(resolve, 500))
+  await new Promise((resolve: (value: unknown) => void) => setTimeout(resolve, 500))
   dataStore.initializeData()
   loading.value = false
 }
 
 const filteredCourses = computed(() => {
-  const filtered = dataStore.courses.filter((course) =>
+  const filtered = dataStore.courses.filter((course: Course) =>
     course.name.toLowerCase().includes(searchText.value.toLowerCase())
   )
   return filtered.slice(
