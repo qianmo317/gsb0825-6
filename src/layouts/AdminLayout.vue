@@ -48,6 +48,18 @@
               <span>课程管理</span>
             </template>
           </el-menu-item>
+          <el-menu-item index="/grades">
+            <el-icon><EditPen /></el-icon>
+            <template #title>
+              <span>成绩管理</span>
+            </template>
+          </el-menu-item>
+          <el-menu-item index="/analysis">
+            <el-icon><DataLine /></el-icon>
+            <template #title>
+              <span>学情分析</span>
+            </template>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 
@@ -101,7 +113,9 @@ import {
   DocumentCopy,
   Fold,
   Expand,
-  ArrowDown
+  ArrowDown,
+  EditPen,
+  DataLine
 } from '@element-plus/icons-vue'
 
 const router = useRouter()
