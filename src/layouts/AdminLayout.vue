@@ -48,6 +48,12 @@
               <span>课程管理</span>
             </template>
           </el-menu-item>
+          <el-menu-item index="/grades">
+            <el-icon><DataAnalysis /></el-icon>
+            <template #title>
+              <span>成绩管理</span>
+            </template>
+          </el-menu-item>
         </el-menu>
       </el-aside>
 
@@ -99,6 +105,7 @@ import {
   User,
   UserFilled,
   DocumentCopy,
+  DataAnalysis,
   Fold,
   Expand,
   ArrowDown
